@@ -1,16 +1,15 @@
-<h2>All Tickets</h2>
+<h2>Ticket Summary</h2>
+
 <table border="1">
 <tr>
     <th>Name</th>
-    <th>Ticket ID</th>
-    <th>Status</th>
+    <th>Total Tickets</th>
 </tr>
 
 {% for row in data %}
 <tr>
     <td>{{ row[0] }}</td>
     <td>{{ row[1] }}</td>
-    <td>{{ row[2] }}</td>
 </tr>
 {% endfor %}
 </table>
