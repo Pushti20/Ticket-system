@@ -132,3 +132,11 @@ def admin():
             return "<h3>Wrong Admin Password</h3>"
 
     return render_template("admin_login.html")
+
+@app.route("/reset_db")
+def reset_db():
+    cur.execute("DELETE FROM tickets;")
+    cur.execute("DELETE FROM users;")
+    conn.commit()
+    return "Database Reset Successful"
+
