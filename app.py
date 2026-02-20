@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, send_file, redirect
+from flask import Flask, request, render_template, send_file, redirect, url_for
 import qrcode
 import uuid
 from io import BytesIO
@@ -14,7 +14,7 @@ def get_connection():
     return psycopg2.connect(DATABASE_URL)
 
 
-# -------- CREATE TABLES (SAFE STARTUP) --------
+# ---------- INIT DATABASE ----------
 def init_db():
     conn = get_connection()
     cur = conn.cursor()
@@ -43,7 +43,7 @@ def init_db():
 init_db()
 
 
-# -------- LOGIN --------
+# ---------- LOGIN ----------
 @app.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -65,12 +65,12 @@ def login():
 
         cur.close()
         conn.close()
-        return "<h3>User not found. Please Sign Up.</h3>"
+        return "<h3>User not found</h3>"
 
     return render_template("login.html")
 
 
-# -------- SIGNUP --------
+# ---------- SIGNUP ----------
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
@@ -90,6 +90,7 @@ def signup():
         for _ in range(ticket_count):
             ticket_id = str(uuid.uuid4())
             new_tickets.append(ticket_id)
+
             cur.execute(
                 "INSERT INTO tickets (ticket_id, user_name, status) VALUES (%s, %s, %s)",
                 (ticket_id, name, "unused")
@@ -104,7 +105,7 @@ def signup():
     return render_template("signup.html")
 
 
-# -------- QR --------
+# ---------- QR ----------
 @app.route("/qr/<ticket_id>")
 def generate_qr(ticket_id):
     qr_data = f"{BASE_URL}/verify/{ticket_id}"
@@ -117,7 +118,7 @@ def generate_qr(ticket_id):
     return send_file(buffer, mimetype="image/png")
 
 
-# -------- VERIFY --------
+# ---------- VERIFY ----------
 @app.route("/verify/<ticket_id>")
 def verify(ticket_id):
     conn = get_connection()
@@ -144,27 +145,77 @@ def verify(ticket_id):
     return render_template("verify.html", message=message)
 
 
-# -------- ADMIN --------
+# ---------- ADMIN LOGIN ----------
 @app.route("/admin", methods=["GET", "POST"])
 def admin():
     if request.method == "POST":
         if request.form["password"] == "1234":
-
-            conn = get_connection()
-            cur = conn.cursor()
-
-            cur.execute("""
-                SELECT user_name, COUNT(*)
-                FROM tickets
-                GROUP BY user_name
-            """)
-            data = cur.fetchall()
-
-            cur.close()
-            conn.close()
-
-            return render_template("admin_dashboard.html", data=data)
-
-        return "<h3>Wrong Admin Password</h3>"
+            return redirect(url_for("admin_dashboard"))
+        return "<h3>Wrong Password</h3>"
 
     return render_template("admin_login.html")
+
+
+# ---------- ADMIN DASHBOARD ----------
+@app.route("/admin/dashboard")
+def admin_dashboard():
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT user_name, COUNT(*)
+        FROM tickets
+        GROUP BY user_name
+    """)
+    data = cur.fetchall()
+
+    cur.close()
+    conn.close()
+
+    return render_template("admin_dashboard.html", data=data)
+
+
+# ---------- EDIT TICKETS ----------
+@app.route("/edit_tickets/<username>", methods=["POST"])
+def edit_tickets(username):
+    new_count = int(request.form["new_count"])
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("SELECT ticket_id FROM tickets WHERE user_name=%s", (username,))
+    tickets = cur.fetchall()
+    current_count = len(tickets)
+
+    if new_count > current_count:
+        for _ in range(new_count - current_count):
+            new_ticket = str(uuid.uuid4())
+            cur.execute(
+                "INSERT INTO tickets (ticket_id, user_name, status) VALUES (%s, %s, %s)",
+                (new_ticket, username, "unused")
+            )
+    elif new_count < current_count:
+        for t in tickets[new_count:]:
+            cur.execute("DELETE FROM tickets WHERE ticket_id=%s", (t[0],))
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return redirect(url_for("admin_dashboard"))
+
+
+# ---------- DELETE USER ----------
+@app.route("/delete_user/<username>", methods=["POST"])
+def delete_user(username):
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("DELETE FROM tickets WHERE user_name=%s", (username,))
+    cur.execute("DELETE FROM users WHERE name=%s", (username,))
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return redirect(url_for("admin_dashboard"))
