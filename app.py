@@ -304,3 +304,4 @@ def delete_user(username):
     conn.close()
 
     return "<script>window.location='/admin'</script>"
+
