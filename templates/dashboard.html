@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Tickets</title>
+</head>
+<body>
+    <h2>Your Tickets</h2>
+
+    {% for ticket in tickets %}
+        <p>Ticket ID: {{ ticket }}</p>
+        <img src="/qr/{{ ticket }}" width="200"><br><br>
+    {% endfor %}
+</body>
+</html>
