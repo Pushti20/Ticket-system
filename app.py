@@ -67,7 +67,7 @@ def signup():
 # ---------------- DYNAMIC QR ----------------
 @app.route("/qr/<ticket_id>")
 def generate_qr(ticket_id):
-    qr_data = f"http://127.0.0.1:5000/verify/{ticket_id}"
+    qr_data = f"https://ticket-system-xxxx.onrender.com/verify/{ticket_id}"
     img = qrcode.make(qr_data)
 
     buffer = BytesIO()
@@ -133,4 +133,5 @@ def admin():
 
 
 if __name__ == "__main__":
+
     app.run(debug=True)
