@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, send_file, redirect, url_for
+from flask import Flask, request, render_template, send_file, redirect
 import qrcode
 import uuid
 from io import BytesIO
@@ -14,38 +14,41 @@ def get_connection():
     return psycopg2.connect(DATABASE_URL)
 
 
-# ---------- CREATE TABLES ----------
-conn = get_connection()
-cur = conn.cursor()
+# -------- CREATE TABLES (SAFE STARTUP) --------
+def init_db():
+    conn = get_connection()
+    cur = conn.cursor()
 
-cur.execute("""
-CREATE TABLE IF NOT EXISTS users (
-    id SERIAL PRIMARY KEY,
-    name TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL
-);
-""")
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        name TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL
+    );
+    """)
 
-cur.execute("""
-CREATE TABLE IF NOT EXISTS tickets (
-    id SERIAL PRIMARY KEY,
-    ticket_id TEXT UNIQUE NOT NULL,
-    user_name TEXT NOT NULL,
-    status TEXT DEFAULT 'unused'
-);
-""")
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS tickets (
+        id SERIAL PRIMARY KEY,
+        ticket_id TEXT UNIQUE NOT NULL,
+        user_name TEXT NOT NULL,
+        status TEXT DEFAULT 'unused'
+    );
+    """)
 
-conn.commit()
-cur.close()
-conn.close()
+    conn.commit()
+    cur.close()
+    conn.close()
+
+init_db()
 
 
-# ---------- USER LOGIN ----------
+# -------- LOGIN --------
 @app.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        name = request.form["name"].strip()
-        password = request.form["password"].strip()
+        name = request.form["name"]
+        password = request.form["password"]
 
         conn = get_connection()
         cur = conn.cursor()
@@ -67,12 +70,12 @@ def login():
     return render_template("login.html")
 
 
-# ---------- SIGNUP ----------
+# -------- SIGNUP --------
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-        name = request.form["name"].strip()
-        password = request.form["password"].strip()
+        name = request.form["name"]
+        password = request.form["password"]
         ticket_count = int(request.form["tickets"])
 
         conn = get_connection()
@@ -101,7 +104,7 @@ def signup():
     return render_template("signup.html")
 
 
-# ---------- QR GENERATION ----------
+# -------- QR --------
 @app.route("/qr/<ticket_id>")
 def generate_qr(ticket_id):
     qr_data = f"{BASE_URL}/verify/{ticket_id}"
@@ -114,7 +117,7 @@ def generate_qr(ticket_id):
     return send_file(buffer, mimetype="image/png")
 
 
-# ---------- VERIFY ----------
+# -------- VERIFY --------
 @app.route("/verify/<ticket_id>")
 def verify(ticket_id):
     conn = get_connection()
@@ -141,79 +144,27 @@ def verify(ticket_id):
     return render_template("verify.html", message=message)
 
 
-# ---------- ADMIN LOGIN ----------
+# -------- ADMIN --------
 @app.route("/admin", methods=["GET", "POST"])
 def admin():
     if request.method == "POST":
         if request.form["password"] == "1234":
-            return redirect(url_for("admin_dashboard"))
-        else:
-            return "<h3>Wrong Admin Password</h3>"
+
+            conn = get_connection()
+            cur = conn.cursor()
+
+            cur.execute("""
+                SELECT user_name, COUNT(*)
+                FROM tickets
+                GROUP BY user_name
+            """)
+            data = cur.fetchall()
+
+            cur.close()
+            conn.close()
+
+            return render_template("admin_dashboard.html", data=data)
+
+        return "<h3>Wrong Admin Password</h3>"
 
     return render_template("admin_login.html")
-
-
-# ---------- ADMIN DASHBOARD ----------
-@app.route("/admin/dashboard")
-def admin_dashboard():
-    conn = get_connection()
-    cur = conn.cursor()
-
-    cur.execute("""
-        SELECT user_name, COUNT(*)
-        FROM tickets
-        GROUP BY user_name
-    """)
-    data = cur.fetchall()
-
-    cur.close()
-    conn.close()
-
-    return render_template("admin_dashboard.html", data=data)
-
-
-# ---------- EDIT TICKETS ----------
-@app.route("/edit_tickets/<username>", methods=["POST"])
-def edit_tickets(username):
-    new_count = int(request.form["new_count"])
-
-    conn = get_connection()
-    cur = conn.cursor()
-
-    cur.execute("SELECT ticket_id FROM tickets WHERE user_name=%s", (username,))
-    tickets = cur.fetchall()
-    current_count = len(tickets)
-
-    if new_count > current_count:
-        for _ in range(new_count - current_count):
-            new_ticket = str(uuid.uuid4())
-            cur.execute(
-                "INSERT INTO tickets (ticket_id, user_name, status) VALUES (%s, %s, %s)",
-                (new_ticket, username, "unused")
-            )
-
-    elif new_count < current_count:
-        for t in tickets[new_count:]:
-            cur.execute("DELETE FROM tickets WHERE ticket_id=%s", (t[0],))
-
-    conn.commit()
-    cur.close()
-    conn.close()
-
-    return redirect(url_for("admin_dashboard"))
-
-
-# ---------- DELETE USER ----------
-@app.route("/delete_user/<username>", methods=["POST"])
-def delete_user(username):
-    conn = get_connection()
-    cur = conn.cursor()
-
-    cur.execute("DELETE FROM tickets WHERE user_name=%s", (username,))
-    cur.execute("DELETE FROM users WHERE name=%s", (username,))
-
-    conn.commit()
-    cur.close()
-    conn.close()
-
-    return redirect(url_for("admin_dashboard"))
