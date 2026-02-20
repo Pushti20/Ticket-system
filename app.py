@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, send_file, redirect, url_for
+from flask import Flask, request, render_template, send_file, redirect
 import qrcode
 import uuid
 from io import BytesIO
@@ -10,11 +10,12 @@ DATABASE_URL = "postgresql://ticket_2rx5_user:2eCxcBOdngYTBvXGPCX2zveIwPbX8fXN@d
 BASE_URL = "https://ticket-system-bosm.onrender.com"
 
 
+# ---------- DATABASE CONNECTION ----------
 def get_connection():
     return psycopg2.connect(DATABASE_URL)
 
 
-# ---------- INIT DATABASE ----------
+# ---------- CREATE TABLES ----------
 def init_db():
     conn = get_connection()
     cur = conn.cursor()
@@ -81,6 +82,7 @@ def signup():
         conn = get_connection()
         cur = conn.cursor()
 
+        # insert user if not exists
         cur.execute("SELECT * FROM users WHERE name=%s", (name,))
         if not cur.fetchone():
             cur.execute("INSERT INTO users (name, password) VALUES (%s, %s)", (name, password))
@@ -145,56 +147,50 @@ def verify(ticket_id):
     return render_template("verify.html", message=message)
 
 
-# ---------- ADMIN LOGIN ----------
+# ---------- ADMIN ----------
 @app.route("/admin", methods=["GET", "POST"])
 def admin():
     if request.method == "POST":
         if request.form["password"] == "1234":
-            return redirect(url_for("admin_dashboard"))
+            conn = get_connection()
+            cur = conn.cursor()
+
+            cur.execute("""
+                SELECT user_name, COUNT(*)
+                FROM tickets
+                GROUP BY user_name
+            """)
+            data = cur.fetchall()
+
+            cur.close()
+            conn.close()
+
+            return render_template("admin_dashboard.html", data=data)
+
         return "<h3>Wrong Password</h3>"
 
     return render_template("admin_login.html")
 
 
-# ---------- ADMIN DASHBOARD ----------
-@app.route("/admin/dashboard")
-def admin_dashboard():
-    conn = get_connection()
-    cur = conn.cursor()
-
-    cur.execute("""
-        SELECT user_name, COUNT(*)
-        FROM tickets
-        GROUP BY user_name
-    """)
-    data = cur.fetchall()
-
-    cur.close()
-    conn.close()
-
-    return render_template("admin_dashboard.html", data=data)
-
-
 # ---------- EDIT TICKETS ----------
-@app.route("/edit_tickets/<username>", methods=["POST"])
-def edit_tickets(username):
-    new_count = int(request.form["new_count"])
+@app.route("/edit/<username>", methods=["POST"])
+def edit(username):
+    new_count = int(request.form["count"])
 
     conn = get_connection()
     cur = conn.cursor()
 
     cur.execute("SELECT ticket_id FROM tickets WHERE user_name=%s", (username,))
     tickets = cur.fetchall()
-    current_count = len(tickets)
+    current = len(tickets)
 
-    if new_count > current_count:
-        for _ in range(new_count - current_count):
-            new_ticket = str(uuid.uuid4())
+    if new_count > current:
+        for _ in range(new_count - current):
             cur.execute(
-                "INSERT INTO tickets (ticket_id, user_name, status) VALUES (%s, %s, %s)",
-                (new_ticket, username, "unused")
+                "INSERT INTO tickets (ticket_id, user_name, status) VALUES (%s,%s,%s)",
+                (str(uuid.uuid4()), username, "unused")
             )
-    elif new_count < current_count:
+    elif new_count < current:
         for t in tickets[new_count:]:
             cur.execute("DELETE FROM tickets WHERE ticket_id=%s", (t[0],))
 
@@ -202,12 +198,12 @@ def edit_tickets(username):
     cur.close()
     conn.close()
 
-    return redirect(url_for("admin_dashboard"))
+    return redirect("/admin")
 
 
 # ---------- DELETE USER ----------
-@app.route("/delete_user/<username>", methods=["POST"])
-def delete_user(username):
+@app.route("/delete/<username>", methods=["POST"])
+def delete(username):
     conn = get_connection()
     cur = conn.cursor()
 
@@ -218,4 +214,4 @@ def delete_user(username):
     cur.close()
     conn.close()
 
-    return redirect(url_for("admin_dashboard"))
+    return redirect("/admin")
