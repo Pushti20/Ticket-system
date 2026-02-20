@@ -67,7 +67,7 @@ def signup():
 # ---------------- DYNAMIC QR ----------------
 @app.route("/qr/<ticket_id>")
 def generate_qr(ticket_id):
-    qr_data = f"https://ticket-system-xxxx.onrender.com/verify/{ticket_id}"
+    qr_data = f"https://ticket-system-bosm.onrender.com/verify/{ticket_id}"
     img = qrcode.make(qr_data)
 
     buffer = BytesIO()
@@ -130,4 +130,5 @@ def admin():
             return "<h3>Wrong Admin Password</h3>"
 
     return render_template("admin_login.html")
+
 
