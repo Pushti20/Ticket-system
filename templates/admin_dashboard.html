@@ -4,12 +4,30 @@
 <tr>
     <th>Name</th>
     <th>Total Tickets</th>
+    <th>Edit Tickets</th>
+    <th>Delete User</th>
 </tr>
 
 {% for row in data %}
 <tr>
     <td>{{ row[0] }}</td>
     <td>{{ row[1] }}</td>
+
+    <td>
+        <form action="/edit_tickets/{{ row[0] }}" method="POST">
+            <input type="number" name="new_count" value="{{ row[1] }}" min="0" required>
+            <button type="submit">Update</button>
+        </form>
+    </td>
+
+    <td>
+        <form action="/delete_user/{{ row[0] }}" method="POST">
+            <button type="submit" onclick="return confirm('Delete this user?')">
+                Delete
+            </button>
+        </form>
+    </td>
+
 </tr>
 {% endfor %}
 </table>
