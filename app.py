@@ -12,7 +12,7 @@ DATABASE_URL = "postgresql://ticket_2rx5_user:2eCxcBOdngYTBvXGPCX2zveIwPbX8fXN@d
 conn = psycopg2.connect(DATABASE_URL)
 cur = conn.cursor()
 
-# Create tables
+# Create tables if not exist
 cur.execute("""
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
@@ -104,6 +104,7 @@ def generate_qr(ticket_id):
 # ================= VERIFY =================
 @app.route("/verify/<ticket_id>")
 def verify(ticket_id):
+
     cur.execute("SELECT status FROM tickets WHERE ticket_id=%s", (ticket_id,))
     ticket = cur.fetchone()
 
@@ -125,18 +126,14 @@ def admin():
         password = request.form["password"]
 
         if password == "1234":
-            cur.execute("SELECT user_name, ticket_id, status FROM tickets")
+            cur.execute("""
+                SELECT user_name, COUNT(*) 
+                FROM tickets 
+                GROUP BY user_name
+            """)
             data = cur.fetchall()
             return render_template("admin_dashboard.html", data=data)
         else:
             return "<h3>Wrong Admin Password</h3>"
 
     return render_template("admin_login.html")
-
-@app.route("/reset_db")
-def reset_db():
-    cur.execute("DELETE FROM tickets;")
-    cur.execute("DELETE FROM users;")
-    conn.commit()
-    return "Database Reset Successful"
-
