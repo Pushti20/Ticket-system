@@ -6,13 +6,13 @@ import psycopg2
 
 app = Flask(__name__)
 
-# ---------------- DATABASE CONNECTION ----------------
+# ================= DATABASE =================
 DATABASE_URL = "postgresql://ticket_2rx5_user:2eCxcBOdngYTBvXGPCX2zveIwPbX8fXN@dpg-d6c64phr0fns73avn04g-a/ticket_2rx5"
 
 conn = psycopg2.connect(DATABASE_URL)
 cur = conn.cursor()
 
-# ---------------- CREATE TABLES ----------------
+# Create tables
 cur.execute("""
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
@@ -32,23 +32,22 @@ CREATE TABLE IF NOT EXISTS tickets (
 
 conn.commit()
 
-# ---------------- BASE URL ----------------
 BASE_URL = "https://ticket-system-bosm.onrender.com"
 
 
-# ---------------- LOGIN ----------------
+# ================= LOGIN =================
 @app.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        name = request.form["name"]
-        password = request.form["password"]
+        name = request.form["name"].strip()
+        password = request.form["password"].strip()
 
         cur.execute("SELECT * FROM users WHERE name=%s AND password=%s", (name, password))
         user = cur.fetchone()
 
         if user:
             cur.execute("SELECT ticket_id FROM tickets WHERE user_name=%s", (name,))
-            tickets = [t[0] for t in cur.fetchall()]
+            tickets = [row[0] for row in cur.fetchall()]
             return render_template("dashboard.html", tickets=tickets)
         else:
             return "<h3>User not found. Please Sign Up.</h3>"
@@ -56,18 +55,20 @@ def login():
     return render_template("login.html")
 
 
-# ---------------- SIGNUP ----------------
+# ================= SIGNUP =================
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-        name = request.form["name"]
-        password = request.form["password"]
+        name = request.form["name"].strip()
+        password = request.form["password"].strip()
         ticket_count = int(request.form["tickets"])
 
-        try:
+        # Insert user if not exists
+        cur.execute("SELECT * FROM users WHERE name=%s", (name,))
+        existing = cur.fetchone()
+
+        if not existing:
             cur.execute("INSERT INTO users (name, password) VALUES (%s, %s)", (name, password))
-        except:
-            pass  # user already exists
 
         new_tickets = []
 
@@ -87,7 +88,7 @@ def signup():
     return render_template("signup.html")
 
 
-# ---------------- QR GENERATION ----------------
+# ================= QR GENERATION =================
 @app.route("/qr/<ticket_id>")
 def generate_qr(ticket_id):
     qr_data = f"{BASE_URL}/verify/{ticket_id}"
@@ -100,10 +101,9 @@ def generate_qr(ticket_id):
     return send_file(buffer, mimetype="image/png")
 
 
-# ---------------- VERIFY ----------------
+# ================= VERIFY =================
 @app.route("/verify/<ticket_id>")
 def verify(ticket_id):
-
     cur.execute("SELECT status FROM tickets WHERE ticket_id=%s", (ticket_id,))
     ticket = cur.fetchone()
 
@@ -118,14 +118,14 @@ def verify(ticket_id):
         return render_template("verify.html", message="Already Scanned")
 
 
-# ---------------- ADMIN ----------------
+# ================= ADMIN =================
 @app.route("/admin", methods=["GET", "POST"])
 def admin():
     if request.method == "POST":
         password = request.form["password"]
 
         if password == "1234":
-            cur.execute("SELECT user_name, COUNT(*) FROM tickets GROUP BY user_name")
+            cur.execute("SELECT user_name, ticket_id, status FROM tickets")
             data = cur.fetchall()
             return render_template("admin_dashboard.html", data=data)
         else:
