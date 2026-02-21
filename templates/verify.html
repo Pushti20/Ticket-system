@@ -2,11 +2,55 @@
 <html>
 <head>
     <title>Verification</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #3b6cb7, #5f88c5);
+        }
+
+        .container {
+            background: white;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            text-align: center;
+            width: 400px;
+        }
+
+        h1 {
+            color: #2f3f90;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: #2f3f90;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            background: #1e2c6d;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>{{ message }}</h1>
+
+    <div class="container">
+        <h1>{{ message }}</h1>
+        <a href="/" class="back-btn">Back to Login</a>
+    </div>
+
 </body>
-
 </html>
-
-
