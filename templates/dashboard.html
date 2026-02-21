@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Your Tickets</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <h2>Your Tickets</h2>
@@ -11,4 +12,5 @@
         <img src="/qr/{{ ticket }}" width="200"><br><br>
     {% endfor %}
 </body>
+
 </html>
