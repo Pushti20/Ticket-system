@@ -4,56 +4,28 @@
     <title>Your Tickets</title>
 
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        html, body {
+        body {
             margin: 0;
-            padding: 0;
-            min-height: 100vh;
             font-family: Arial, sans-serif;
             background: linear-gradient(135deg, #3b6cb7, #5f88c5);
-        }
-
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            text-align: center;
         }
 
         .container {
-            background: linear-gradient(135deg, #6e90c9, #4f74b8);
-            padding: 50px;
-            border-radius: 25px;
+            background: #6e90c9;
+            margin: 80px auto;
+            padding: 40px;
+            border-radius: 20px;
             width: 500px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
             color: white;
         }
 
         h2 {
             margin-bottom: 20px;
-            letter-spacing: 2px;
-        }
-
-        .instruction {
-            font-size: 14px;
-            margin-bottom: 30px;
-            opacity: 0.9;
         }
 
         .ticket-box {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 20px;
-            border-radius: 15px;
             margin-bottom: 25px;
-        }
-
-        .ticket-id {
-            font-weight: bold;
-            margin-bottom: 15px;
-            word-wrap: break-word;
         }
 
         img {
@@ -62,26 +34,21 @@
             border-radius: 10px;
         }
 
-        /* Button container */
-        .btn-wrapper {
-            margin-top: 40px;   /* creates separate line space */
-            text-align: center;
-        }
-
+        /* Button */
         .back-btn {
-            display: inline-block;
-            padding: 12px 50px;
-            background: #3f4aa1;
+            display: block;          /* 🔥 makes it new line */
+            width: fit-content;      /* keeps medium size */
+            margin: 30px auto 0;     /* centers it */
+            padding: 12px 40px;
+            background: #2f3f90;
             color: white;
             text-decoration: none;
             border-radius: 8px;
             font-weight: bold;
-            font-size: 15px;
-            transition: 0.3s;
         }
 
         .back-btn:hover {
-            background: #2f3f90;
+            background: #1e2c6d;
         }
 
     </style>
@@ -92,23 +59,15 @@
     <div class="container">
         <h2>YOUR TICKETS</h2>
 
-        <div class="instruction">
-            Please scan this QR code at the entry gate.
-        </div>
-
         {% for ticket in tickets %}
             <div class="ticket-box">
-                <div class="ticket-id">
-                    Ticket ID: {{ ticket }}
-                </div>
+                <p>Ticket ID: {{ ticket }}</p>
                 <img src="/qr/{{ ticket }}" width="200">
             </div>
         {% endfor %}
 
-        <!-- Separate Line Button -->
-        <div class="btn-wrapper">
-            <a href="/" class="back-btn">Back to Login</a>
-        </div>
+        <!-- Next line button -->
+        <a href="/" class="back-btn">Back to Login</a>
 
     </div>
 
