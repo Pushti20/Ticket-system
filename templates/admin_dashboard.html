@@ -7,7 +7,7 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #0d6efd, #3a8bfd);
+            background: linear-gradient(135deg, #3b6cb7, #5f88c5);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -16,52 +16,52 @@
 
         .card {
             background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            width: 800px;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            width: 850px;
+            text-align: center;
         }
 
         h2 {
-            text-align: center;
-            color: #0d6efd;
-            margin-bottom: 20px;
+            color: #2f3f90;
+            margin-bottom: 25px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-bottom: 30px;
         }
 
         th {
-            background: #0d6efd;
+            background: #2f3f90;
             color: white;
-            padding: 10px;
+            padding: 12px;
         }
 
         td {
-            padding: 10px;
-            text-align: center;
+            padding: 12px;
             border-bottom: 1px solid #ddd;
         }
 
         input[type="number"] {
             width: 60px;
-            padding: 5px;
+            padding: 6px;
             border-radius: 5px;
             border: 1px solid #ccc;
         }
 
         button {
-            padding: 6px 12px;
+            padding: 8px 14px;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
         }
 
         .update-btn {
-            background: #0d6efd;
+            background: #2f3f90;
             color: white;
         }
 
@@ -71,7 +71,21 @@
         }
 
         button:hover {
-            opacity: 0.85;
+            opacity: 0.9;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #2f3f90;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            background: #1e2c6d;
         }
     </style>
 </head>
@@ -94,7 +108,6 @@
             <td>{{ row[0] }}</td>
             <td>{{ row[1] }}</td>
 
-            <!-- EDIT -->
             <td>
                 <form action="/edit" method="POST">
                     <input type="hidden" name="username" value="{{ row[0] }}">
@@ -103,7 +116,6 @@
                 </form>
             </td>
 
-            <!-- DELETE -->
             <td>
                 <form action="/delete" method="POST">
                     <input type="hidden" name="username" value="{{ row[0] }}">
@@ -114,6 +126,8 @@
         </tr>
         {% endfor %}
     </table>
+
+    <a href="/" class="back-btn">Back to Login</a>
 
 </div>
 
