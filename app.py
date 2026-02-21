@@ -147,8 +147,8 @@ def verify(ticket_id):
 
 
 # ---------- ADMIN LOGIN ----------
-@app.route("/admin")
-def admin():
+@app.route("/admin/dashboard")
+def admin_dashboard():
     conn = get_connection()
     cur = conn.cursor()
 
@@ -159,8 +159,7 @@ def admin():
     """)
     data = cur.fetchall()
 
-    # Calculate total tickets in Python (FAST)
-    total_tickets = sum(row[1] for row in data)
+    total = sum(row[1] for row in data)  # ✅ correct total
 
     cur.close()
     conn.close()
@@ -168,9 +167,8 @@ def admin():
     return render_template(
         "admin_dashboard.html",
         data=data,
-        total=total_tickets
+        total=total
     )
-
 
 # ---------- EDIT TICKETS (SAFE VERSION) ----------
 @app.route("/edit", methods=["POST"])
@@ -232,4 +230,15 @@ def delete_all():
 
     return redirect("/admin")
 
+@app.route("/admin", methods=["GET", "POST"])
+def admin_login():
+    if request.method == "POST":
+        password = request.form["password"]
+
+        if password == "1234":   # ✅ KEEP YOUR PASSWORD
+            return redirect("/admin/dashboard")
+        else:
+            return "Wrong Password"
+
+    return render_template("admin_login.html")
 
