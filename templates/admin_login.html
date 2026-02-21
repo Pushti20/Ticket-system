@@ -15,72 +15,53 @@
         }
 
         .container {
-            background: linear-gradient(135deg, #6e90c9, #4f74b8);
-            padding: 50px;
-            border-radius: 25px;
-            width: 420px;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            width: 380px;
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-            color: white;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
         }
 
         h2 {
-            margin-bottom: 30px;
-            letter-spacing: 2px;
-        }
-
-        label {
-            display: block;
-            text-align: left;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-bottom: 25px;
+            color: #2f3f90;
         }
 
         input {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             margin-bottom: 20px;
-            border: none;
-            border-radius: 8px;
-            background: #e6e6e6;
+            border-radius: 6px;
+            border: 1px solid #ccc;
             font-size: 14px;
-            outline: none;
-            box-sizing: border-box;
         }
 
         button {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             background: #2f3f90;
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             font-weight: bold;
-            font-size: 15px;
             cursor: pointer;
-            transition: 0.3s;
         }
 
         button:hover {
             background: #1e2c6d;
         }
 
-        .back-btn {
+        .back-link {
             display: block;
-            width: 100%;
             margin-top: 20px;
-            padding: 14px;
-            background: #1e2c6d;
-            color: white;
+            color: #2f3f90;
             text-decoration: none;
-            border-radius: 8px;
             font-weight: bold;
-            transition: 0.3s;
-            box-sizing: border-box;
         }
 
-        .back-btn:hover {
-            background: #16245a;
+        .back-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -91,12 +72,11 @@
         <h2>ADMIN LOGIN</h2>
 
         <form method="POST">
-            <label>Password</label>
-            <input type="password" name="password" required>
+            <input type="password" name="password" placeholder="Enter Password" required>
             <button type="submit">Login</button>
         </form>
 
-        <a href="/" class="back-btn">Back to Login</a>
+        <a href="/" class="back-link">Back to Login</a>
     </div>
 
 </body>
