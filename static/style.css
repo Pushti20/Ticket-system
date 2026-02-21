@@ -1,5 +1,10 @@
-/* Import Google Font */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
     background: linear-gradient(135deg, #E3F2FD, #BBDEFB, #90CAF9);
@@ -8,68 +13,116 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+}
+
+/* Card Container */
+.container {
+    background: #ffffff;
+    padding: 40px;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 18px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Headings */
+h1, h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 600;
+    color: #0d47a1;
+}
+
+/* Form Layout */
+form {
+    display: flex;
     flex-direction: column;
 }
 
-.container {
-    background-color: rgba(255, 255, 255, 0.95);
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    max-width: 500px;
-    width: 100%;
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from { 
-        opacity: 0; 
-        transform: translateY(-20px); 
-    }
-    to { 
-        opacity: 1; 
-        transform: translateY(0); 
-    }
-}
-
-h2 {
-    font-size: 28px;
-    font-weight: bold;
+label {
+    margin-bottom: 6px;
+    font-weight: 500;
     color: #333;
-    text-align: center;
-    margin-bottom: 20px;
 }
 
-.form-group {
-    margin-bottom: 20px;
-}
-
-.btn-primary {
-    width: 100%;
+input {
     padding: 12px;
-    font-size: 16px;
-    background-color: #0d47a1;
-    color: white;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+input:focus {
+    border-color: #0d47a1;
+    outline: none;
+    box-shadow: 0 0 8px rgba(13, 71, 161, 0.2);
+}
+
+/* Buttons */
+button, .btn-primary {
+    padding: 12px;
     border: none;
-    border-radius: 25px;
+    border-radius: 30px;
+    background: #0d47a1;
+    color: white;
+    font-size: 16px;
     cursor: pointer;
     transition: 0.3s;
 }
 
-.btn-primary:hover {
-    background-color: #0b3c8a;
+button:hover, .btn-primary:hover {
+    background: #08306b;
+    transform: translateY(-2px);
 }
 
-.alert {
-    margin-top: 20px;
-    padding: 15px;
-    border-radius: 5px;
+/* Links */
+a {
+    display: block;
     text-align: center;
-    font-size: 16px;
+    margin-top: 18px;
+    text-decoration: none;
+    color: #0d47a1;
+    font-weight: 500;
+    transition: 0.3s;
 }
 
-.alert-danger {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
+a:hover {
+    color: #08306b;
+}
+
+/* Ticket Summary Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th {
+    text-align: left;
+    padding-bottom: 10px;
+    color: #0d47a1;
+}
+
+td {
+    padding: 8px 0;
+}
+
+td input {
+    width: 70px;
+    margin-right: 10px;
 }
