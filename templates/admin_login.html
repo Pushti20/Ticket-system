@@ -22,7 +22,7 @@ html,body{
 .bubble{
     position:absolute;
     border-radius:50%;
-    opacity:0.9;
+    opacity:0.85;
     z-index:1;
 }
 
@@ -60,7 +60,7 @@ html,body{
     right:-90px;
 }
 
-/* ===== CENTER GLASS CARD ===== */
+/* ===== CENTER CARD ===== */
 
 body{
     display:flex;
@@ -73,10 +73,14 @@ body{
     width:420px;
     padding:45px;
     border-radius:18px;
-    background:rgba(255,255,255,0.08);
-    backdrop-filter:blur(20px);
+
+    /* GLASS EFFECT WITHOUT BLUR */
+    background:
+        linear-gradient(rgba(255,255,255,0.10), rgba(255,255,255,0.05));
+
     border:1px solid rgba(255,255,255,0.25);
-    box-shadow:0 25px 60px rgba(0,0,0,0.5);
+    box-shadow:0 25px 60px rgba(0,0,0,0.45);
+
     color:white;
     text-align:center;
     z-index:5;
@@ -87,14 +91,13 @@ h2{
     font-weight:500;
 }
 
-/* Input */
 input{
     width:100%;
     padding:12px;
     margin:12px 0;
     border-radius:8px;
     border:none;
-    background:rgba(255,255,255,0.15);
+    background:rgba(255,255,255,0.18);
     color:white;
     outline:none;
 }
@@ -103,7 +106,6 @@ input::placeholder{
     color:rgba(255,255,255,0.8);
 }
 
-/* Button */
 button{
     width:100%;
     padding:12px;
@@ -114,13 +116,13 @@ button{
     color:white;
     font-weight:bold;
     cursor:pointer;
+    transition:0.2s;
 }
 
 button:hover{
     opacity:0.9;
 }
 
-/* Back Link */
 a{
     display:block;
     margin-top:18px;
@@ -136,7 +138,6 @@ a:hover{
 
 <body>
 
-<!-- SIDE BUBBLES -->
 <div class="bubble bubble-left-big"></div>
 <div class="bubble bubble-left-small"></div>
 <div class="bubble bubble-right-big"></div>
