@@ -1,136 +1,187 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin Dashboard</title>
+<title>Admin Dashboard</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #3b6cb7, #5f88c5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
+<style>
+*{
+    box-sizing:border-box;
+}
 
-        .card {
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-            width: 850px;
-            text-align: center;
-        }
+html,body{
+    margin:0;
+    min-height:100vh;
+    font-family:Arial, sans-serif;
+    background:linear-gradient(135deg,#0d1b3d,#162a5e);
+    overflow:hidden;
+    position:relative;
+}
 
-        h2 {
-            color: #2f3f90;
-            margin-bottom: 25px;
-        }
+/* ===== SIDE BUBBLES ===== */
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 30px;
-        }
+.bubble{
+    position:absolute;
+    border-radius:50%;
+    opacity:0.85;
+    z-index:1;
+}
 
-        th {
-            background: #2f3f90;
-            color: white;
-            padding: 12px;
-        }
+.bubble-left{
+    width:280px;
+    height:280px;
+    background:radial-gradient(circle at 30% 30%,#67e8f9,#0ea5e9);
+    top:10%;
+    left:-120px;
+}
 
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
-        }
+.bubble-right{
+    width:300px;
+    height:300px;
+    background:radial-gradient(circle at 30% 30%,#60a5fa,#1e40af);
+    bottom:10%;
+    right:-130px;
+}
 
-        input[type="number"] {
-            width: 60px;
-            padding: 6px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
+/* ===== CENTER CARD ===== */
 
-        button {
-            padding: 8px 14px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
 
-        .update-btn {
-            background: #2f3f90;
-            color: white;
-        }
+.card{
+    position:relative;
+    width:900px;
+    padding:40px;
+    border-radius:18px;
+    background:linear-gradient(rgba(255,255,255,0.10), rgba(255,255,255,0.05));
+    border:1px solid rgba(255,255,255,0.25);
+    box-shadow:0 25px 60px rgba(0,0,0,0.45);
+    color:white;
+    text-align:center;
+    z-index:5;
+}
 
-        .delete-btn {
-            background: #dc3545;
-            color: white;
-        }
+/* Heading */
+h2{
+    margin-bottom:25px;
+    font-weight:500;
+}
 
-        button:hover {
-            opacity: 0.9;
-        }
+/* Table */
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-bottom:30px;
+    background:rgba(255,255,255,0.05);
+    border-radius:8px;
+    overflow:hidden;
+}
 
-        .back-btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background: #2f3f90;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: bold;
-        }
+th{
+    background:rgba(255,255,255,0.15);
+    padding:12px;
+}
 
-        .back-btn:hover {
-            background: #1e2c6d;
-        }
-    </style>
+td{
+    padding:12px;
+    border-bottom:1px solid rgba(255,255,255,0.15);
+}
+
+/* Inputs */
+input[type="number"]{
+    width:60px;
+    padding:6px;
+    border-radius:5px;
+    border:none;
+    background:rgba(255,255,255,0.2);
+    color:white;
+}
+
+/* Buttons */
+button{
+    padding:8px 14px;
+    border:none;
+    border-radius:6px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.update-btn{
+    background:#2563eb;
+    color:white;
+}
+
+.delete-btn{
+    background:#dc3545;
+    color:white;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+/* Back Button */
+.back-btn{
+    display:inline-block;
+    padding:12px 30px;
+    background:#2563eb;
+    color:white;
+    text-decoration:none;
+    border-radius:6px;
+    font-weight:bold;
+}
+
+.back-btn:hover{
+    opacity:0.9;
+}
+</style>
 </head>
 
 <body>
 
+<div class="bubble bubble-left"></div>
+<div class="bubble bubble-right"></div>
+
 <div class="card">
-    <h2>Ticket Summary</h2>
+<h2>Ticket Summary</h2>
 
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Total</th>
-            <th>Edit</th>
-            <th>Delete</th>
-        </tr>
+<table>
+<tr>
+<th>Name</th>
+<th>Total</th>
+<th>Edit</th>
+<th>Delete</th>
+</tr>
 
-        {% for row in data %}
-        <tr>
-            <td>{{ row[0] }}</td>
-            <td>{{ row[1] }}</td>
+{% for row in data %}
+<tr>
+<td>{{ row[0] }}</td>
+<td>{{ row[1] }}</td>
 
-            <td>
-                <form action="/edit" method="POST">
-                    <input type="hidden" name="username" value="{{ row[0] }}">
-                    <input type="number" name="count" value="{{ row[1] }}" min="0">
-                    <button type="submit" class="update-btn">Update</button>
-                </form>
-            </td>
+<td>
+<form action="/edit" method="POST">
+<input type="hidden" name="username" value="{{ row[0] }}">
+<input type="number" name="count" value="{{ row[1] }}" min="0">
+<button type="submit" class="update-btn">Update</button>
+</form>
+</td>
 
-            <td>
-                <form action="/delete" method="POST">
-                    <input type="hidden" name="username" value="{{ row[0] }}">
-                    <button type="submit" class="delete-btn">Delete</button>
-                </form>
-            </td>
+<td>
+<form action="/delete" method="POST">
+<input type="hidden" name="username" value="{{ row[0] }}">
+<button type="submit" class="delete-btn">Delete</button>
+</form>
+</td>
 
-        </tr>
-        {% endfor %}
-    </table>
+</tr>
+{% endfor %}
+</table>
 
-    <a href="/" class="back-btn">Back to Login</a>
+<a href="/" class="back-btn">Back to Login</a>
 
 </div>
 
 </body>
 </html>
-
