@@ -82,7 +82,6 @@ def signup():
         conn = get_connection()
         cur = conn.cursor()
 
-        # insert user if not exists
         cur.execute("SELECT * FROM users WHERE name=%s", (name,))
         if not cur.fetchone():
             cur.execute("INSERT INTO users (name, password) VALUES (%s, %s)", (name, password))
@@ -147,11 +146,12 @@ def verify(ticket_id):
     return render_template("verify.html", message=message)
 
 
-# ---------- ADMIN ----------
+# ---------- ADMIN LOGIN ----------
 @app.route("/admin", methods=["GET", "POST"])
 def admin():
     if request.method == "POST":
         if request.form["password"] == "1234":
+
             conn = get_connection()
             cur = conn.cursor()
 
@@ -172,9 +172,10 @@ def admin():
     return render_template("admin_login.html")
 
 
-# ---------- EDIT TICKETS ----------
-@app.route("/edit/<username>", methods=["POST"])
-def edit(username):
+# ---------- EDIT TICKETS (SAFE VERSION) ----------
+@app.route("/edit", methods=["POST"])
+def edit():
+    username = request.form["username"]
     new_count = int(request.form["count"])
 
     conn = get_connection()
@@ -201,9 +202,11 @@ def edit(username):
     return redirect("/admin")
 
 
-# ---------- DELETE USER ----------
-@app.route("/delete/<username>", methods=["POST"])
-def delete(username):
+# ---------- DELETE USER (SAFE VERSION) ----------
+@app.route("/delete", methods=["POST"])
+def delete():
+    username = request.form["username"]
+
     conn = get_connection()
     cur = conn.cursor()
 
