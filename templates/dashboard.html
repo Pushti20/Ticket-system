@@ -2,17 +2,98 @@
 <html>
 <head>
     <title>Your Tickets</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #3b6cb7, #5f88c5);
+        }
+
+        .container {
+            background: linear-gradient(135deg, #6e90c9, #4f74b8);
+            padding: 50px;
+            border-radius: 25px;
+            width: 500px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            color: white;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .instruction {
+            font-size: 14px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .ticket-box {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+
+        .ticket-id {
+            font-weight: bold;
+            margin-bottom: 15px;
+            word-wrap: break-word;
+        }
+
+        img {
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .back-btn {
+            display: block;   /* 🔥 makes it full line */
+            width: 100%;
+            margin-top: 30px;
+            padding: 14px;
+            background: #2f3f90;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #1e2c6d;
+        }
+    </style>
 </head>
+
 <body>
-    <h2>Your Tickets</h2>
 
-    {% for ticket in tickets %}
-        <p>Ticket ID: {{ ticket }}</p>
-        <img src="/qr/{{ ticket }}" width="200"><br><br>
-    {% endfor %}
+    <div class="container">
+        <h2>YOUR TICKETS</h2>
+
+        <div class="instruction">
+            Please scan this QR code at the entry gate.
+        </div>
+
+        {% for ticket in tickets %}
+            <div class="ticket-box">
+                <div class="ticket-id">
+                    Ticket ID: {{ ticket }}
+                </div>
+                <img src="/qr/{{ ticket }}" width="200">
+            </div>
+        {% endfor %}
+
+        <a href="/" class="back-btn">Back to Login</a>
+
+    </div>
+
 </body>
-
 </html>
-
-
