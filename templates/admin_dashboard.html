@@ -1,31 +1,43 @@
-<h2>Ticket Summary</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
 
-<table border="1">
-<tr>
-    <th>Name</th>
-    <th>Total</th>
-    <th>Edit</th>
-    <th>Delete</th>
-</tr>
+<div class="card">
+    <h2>Ticket Summary</h2>
 
-{% for row in data %}
-<tr>
-    <td>{{ row[0] }}</td>
-    <td>{{ row[1] }}</td>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Total</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
 
-    <td>
-        <form action="/edit/{{ row[0] }}" method="POST">
-            <input type="number" name="count" value="{{ row[1] }}">
-            <button type="submit">Update</button>
-        </form>
-    </td>
+        {% for row in data %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
 
-    <td>
-        <form action="/delete/{{ row[0] }}" method="POST">
-            <button type="submit">Delete</button>
-        </form>
-    </td>
+            <td>
+                <form action="/edit/{{ row[0] }}" method="POST">
+                    <input type="number" name="count" value="{{ row[1] }}">
+                    <button type="submit">Update</button>
+                </form>
+            </td>
 
-</tr>
-{% endfor %}
-</table>
+            <td>
+                <form action="/delete/{{ row[0] }}" method="POST">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+</body>
+</html>
