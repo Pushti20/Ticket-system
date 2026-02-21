@@ -221,4 +221,13 @@ def delete():
 
     return redirect("/admin")
 
+@app.route("/delete_all", methods=["POST"])
+def delete_all():
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("DELETE FROM tickets")
+    conn.commit()
+    cur.close()
+    conn.close()
+    return redirect("/admin")
 
