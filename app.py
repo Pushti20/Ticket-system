@@ -146,10 +146,9 @@ def verify(ticket_id):
     return render_template("verify.html", message=message)
 
 
-# ---------- ADMIN LOGIN ----------
+# ---------- ADMIN DASHBOARD ----------
 @app.route("/admin/dashboard")
 def admin_dashboard():
-
     conn = get_connection()
     cur = conn.cursor()
 
@@ -171,7 +170,8 @@ def admin_dashboard():
         total=total
     )
 
-# ---------- EDIT TICKETS (SAFE VERSION) ----------
+
+# ---------- EDIT TICKETS ----------
 @app.route("/edit", methods=["POST"])
 def edit():
     username = request.form["username"]
@@ -198,10 +198,10 @@ def edit():
     cur.close()
     conn.close()
 
-    return redirect("/admin")
+    return redirect("/admin/dashboard")
 
 
-# ---------- DELETE USER (SAFE VERSION) ----------
+# ---------- DELETE USER ----------
 @app.route("/delete", methods=["POST"])
 def delete():
     username = request.form["username"]
@@ -216,8 +216,10 @@ def delete():
     cur.close()
     conn.close()
 
-    return redirect("/admin")
+    return redirect("/admin/dashboard")
 
+
+# ---------- DELETE ALL ----------
 @app.route("/delete_all", methods=["POST"])
 def delete_all():
     conn = get_connection()
@@ -229,8 +231,10 @@ def delete_all():
     cur.close()
     conn.close()
 
-    return redirect("/admin")
+    return redirect("/admin/dashboard")
 
+
+# ---------- ADMIN LOGIN ----------
 @app.route("/admin", methods=["GET", "POST"])
 def admin_login():
     if request.method == "POST":
