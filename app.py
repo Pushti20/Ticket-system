@@ -150,26 +150,24 @@ def verify(ticket_id):
 @app.route("/admin", methods=["GET", "POST"])
 def admin():
     if request.method == "POST":
-        if request.form["password"] == "1234":
+        if request.form["password"] != "1234":
+            return "<h3>Wrong Password</h3>"
 
-            conn = get_connection()
-            cur = conn.cursor()
+    # For both GET and correct POST
+    conn = get_connection()
+    cur = conn.cursor()
 
-            cur.execute("""
-                SELECT user_name, COUNT(*)
-                FROM tickets
-                GROUP BY user_name
-            """)
-            data = cur.fetchall()
+    cur.execute("""
+        SELECT user_name, COUNT(*)
+        FROM tickets
+        GROUP BY user_name
+    """)
+    data = cur.fetchall()
 
-            cur.close()
-            conn.close()
+    cur.close()
+    conn.close()
 
-            return render_template("admin_dashboard.html", data=data)
-
-        return "<h3>Wrong Password</h3>"
-
-    return render_template("admin_login.html")
+    return render_template("admin_dashboard.html", data=data)
 
 
 # ---------- EDIT TICKETS (SAFE VERSION) ----------
@@ -218,3 +216,4 @@ def delete():
     conn.close()
 
     return redirect("/admin")
+
