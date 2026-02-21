@@ -246,3 +246,19 @@ def admin_login():
             return "Wrong Password"
 
     return render_template("admin_login.html")
+
+@app.route("/delete_all_users", methods=["POST"])
+def delete_all_users():
+    conn = get_connection()
+    cur = conn.cursor()
+
+    # First delete tickets (because tickets depend on users)
+    cur.execute("DELETE FROM tickets")
+    cur.execute("DELETE FROM users")
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return redirect("/admin/dashboard")
+
