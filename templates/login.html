@@ -6,76 +6,57 @@
     <style>
         body {
             margin: 0;
-            height: 100vh;
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #5f88c5, #3c5f9e);
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            background: linear-gradient(135deg, #3b6cb7, #5f88c5);
         }
 
-        .outer-box {
-            background: linear-gradient(135deg, #7ea6d9, #4a6fa8);
-            padding: 40px;
-            border-radius: 20px;
+        .outer-container {
+            background: linear-gradient(135deg, #6e90c9, #4f74b8);
+            padding: 50px;
+            border-radius: 25px;
             width: 420px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
         }
 
         .login-box {
             background: rgba(255, 255, 255, 0.15);
-            padding: 30px;
-            border-radius: 15px;
-            backdrop-filter: blur(8px);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
         }
 
         h2 {
-            text-align: center;
             color: white;
-            letter-spacing: 1px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
         }
 
-        .input-group {
-            margin-bottom: 15px;
-        }
-
-        input {
+        input[type="text"],
+        input[type="password"] {
             width: 100%;
             padding: 12px;
+            margin: 12px 0;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             background: #e6e6e6;
             font-size: 14px;
             outline: none;
         }
 
-        .options {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            color: white;
-            margin: 10px 0 20px 0;
-        }
-
-        .options a {
-            color: white;
-            text-decoration: none;
-        }
-
-        .options a:hover {
-            text-decoration: underline;
-        }
-
         button {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
+            margin-top: 20px;
             background: #2f3f90;
             color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 15px;
+            border-radius: 8px;
             font-weight: bold;
+            font-size: 15px;
             cursor: pointer;
             transition: 0.3s;
         }
@@ -85,14 +66,15 @@
         }
 
         .bottom-links {
-            text-align: center;
-            margin-top: 15px;
+            margin-top: 25px;
+            font-size: 14px;
         }
 
         .bottom-links a {
+            display: block;
             color: white;
-            font-size: 13px;
             text-decoration: none;
+            margin-top: 10px;
         }
 
         .bottom-links a:hover {
@@ -103,19 +85,22 @@
 
 <body>
 
-    <div class="login-card">
-        <h2>User Login</h2>
+    <div class="outer-container">
+        <div class="login-box">
 
-        <form method="POST">
-            <input type="text" name="name" placeholder="Enter Name" required>
-            <input type="password" name="password" placeholder="Enter Password" required>
-            <button type="submit">Login</button>
-        </form>
+            <h2>MEMBER LOGIN</h2>
 
-        <div class="links">
-            <a href="/signup">Sign Up</a>
-            <br><br>
-            <a href="/admin">Admin Login</a>
+            <form method="POST">
+                <input type="text" name="name" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit">LOGIN</button>
+            </form>
+
+            <div class="bottom-links">
+                <a href="/signup">Sign Up</a>
+                <a href="/admin">Admin Login</a>
+            </div>
+
         </div>
     </div>
 
