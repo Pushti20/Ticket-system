@@ -147,31 +147,29 @@ def verify(ticket_id):
 
 
 # ---------- ADMIN LOGIN ----------
-@app.route("/admin", methods=["GET", "POST"])
+@app.route("/admin")
 def admin():
-    if request.method == "POST":
-        if request.form["password"] == "1234":
+    conn = get_connection()
+    cur = conn.cursor()
 
-            conn = get_connection()
-            cur = conn.cursor()
+    cur.execute("""
+        SELECT user_name, COUNT(*)
+        FROM tickets
+        GROUP BY user_name
+    """)
+    data = cur.fetchall()
 
-            cur.execute("""
-                SELECT user_name, COUNT(*)
-                FROM tickets
-                GROUP BY user_name
-            """)
-            data = cur.fetchall()
+    # Calculate total tickets in Python (FAST)
+    total_tickets = sum(row[1] for row in data)
 
-            cur.close()
-            conn.close()
+    cur.close()
+    conn.close()
 
-            return render_template("admin_dashboard.html", data=data)
-
-        else:
-            return "<h3>Wrong Password</h3>"
-
-    # GET request → show login page
-    return render_template("admin_login.html")
+    return render_template(
+        "admin_dashboard.html",
+        data=data,
+        total=total_tickets
+    )
 
 
 # ---------- EDIT TICKETS (SAFE VERSION) ----------
@@ -225,9 +223,13 @@ def delete():
 def delete_all():
     conn = get_connection()
     cur = conn.cursor()
+
     cur.execute("DELETE FROM tickets")
     conn.commit()
+
     cur.close()
     conn.close()
+
     return redirect("/admin")
+
 
