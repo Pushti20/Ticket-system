@@ -15,114 +15,120 @@ body {
     min-height: 100vh;
 }
 
-/* Card Container */
+/* CARD STYLE */
 .container {
     background: #ffffff;
     padding: 40px;
     width: 100%;
     max-width: 420px;
-    border-radius: 18px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-    animation: fadeIn 0.6s ease-in-out;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 0.5s ease-in-out;
 }
 
-/* Animation */
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-25px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* Headings */
 h1, h2 {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     font-weight: 600;
-    color: #0d47a1;
-}
-
-/* Form Layout */
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-label {
-    margin-bottom: 6px;
-    font-weight: 500;
     color: #333;
 }
 
+/* FORM */
+.form-group {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
 input {
+    width: 100%;
     padding: 12px;
-    margin-bottom: 20px;
-    border-radius: 10px;
+    border-radius: 8px;
     border: 1px solid #ccc;
-    font-size: 15px;
+    font-size: 14px;
     transition: 0.3s;
 }
 
 input:focus {
-    border-color: #0d47a1;
+    border-color: #1976d2;
+    box-shadow: 0 0 8px rgba(25, 118, 210, 0.3);
     outline: none;
-    box-shadow: 0 0 8px rgba(13, 71, 161, 0.2);
 }
 
-/* Buttons */
-button, .btn-primary {
+/* BUTTON */
+button,
+.btn-primary {
+    width: 100%;
     padding: 12px;
-    border: none;
-    border-radius: 30px;
-    background: #0d47a1;
+    margin-top: 10px;
+    background-color: #1976d2;
     color: white;
-    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
     cursor: pointer;
     transition: 0.3s;
 }
 
-button:hover, .btn-primary:hover {
-    background: #08306b;
-    transform: translateY(-2px);
+button:hover,
+.btn-primary:hover {
+    background-color: #0d47a1;
 }
 
-/* Links */
+/* LINKS */
 a {
     display: block;
     text-align: center;
-    margin-top: 18px;
+    margin-top: 15px;
     text-decoration: none;
-    color: #0d47a1;
+    color: #1976d2;
     font-weight: 500;
-    transition: 0.3s;
 }
 
 a:hover {
-    color: #08306b;
+    text-decoration: underline;
 }
 
-/* Ticket Summary Table */
+/* TABLE STYLE (Ticket Summary) */
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
 }
 
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
 th {
-    text-align: left;
-    padding-bottom: 10px;
-    color: #0d47a1;
+    background-color: #1976d2;
+    color: white;
 }
 
-td {
-    padding: 8px 0;
+tr:nth-child(even) {
+    background-color: #f2f2f2;
 }
 
-td input {
-    width: 70px;
-    margin-right: 10px;
+/* ALERT */
+.alert {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
 }
