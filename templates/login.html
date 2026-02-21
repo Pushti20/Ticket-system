@@ -2,28 +2,99 @@
 <html>
 <head>
     <title>User Login</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0d6efd, #3a8bfd);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-card {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 320px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #0d6efd;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            outline: none;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+
+        input:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 6px rgba(13, 110, 253, 0.4);
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 15px;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #0b5ed7;
+        }
+
+        a {
+            text-decoration: none;
+            color: #0d6efd;
+            font-size: 14px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .links {
+            margin-top: 15px;
+        }
+    </style>
 </head>
+
 <body>
 
-    <h2>User Login</h2>
+    <div class="login-card">
+        <h2>User Login</h2>
 
-    <form method="POST">
-        Name:
-        <input type="text" name="name" required>
-        <br><br>
+        <form method="POST">
+            <input type="text" name="name" placeholder="Enter Name" required>
+            <input type="password" name="password" placeholder="Enter Password" required>
+            <button type="submit">Login</button>
+        </form>
 
-        Password:
-        <input type="password" name="password" required>
-        <br><br>
-
-        <button type="submit">Login</button>
-    </form>
-
-    <br>
-    <a href="/signup">Sign Up</a>
-    <br><br>
-    <a href="/admin">Admin Login</a>
+        <div class="links">
+            <a href="/signup">Sign Up</a>
+            <br><br>
+            <a href="/admin">Admin Login</a>
+        </div>
+    </div>
 
 </body>
 </html>
