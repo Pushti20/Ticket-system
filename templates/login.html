@@ -4,106 +4,163 @@
 <title>User Login</title>
 
 <style>
-* {
-    box-sizing: border-box;
+*{
+    box-sizing:border-box;
 }
 
-html, body { 
-    margin: 0; 
-    padding: 0; 
-    height: 100%; 
-    background: linear-gradient(135deg, #3b6cb7, #5f88c5); 
-    font-family: Arial, sans-serif; 
+html,body{
+    margin:0;
+    height:100%;
+    font-family:Arial, sans-serif;
+    background:linear-gradient(135deg,#0d1b3d,#162a5e);
+    overflow:hidden;
+    position:relative;
 }
 
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* ===== SIDE BUBBLES ===== */
+
+.bubble{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(2px);
+    opacity:0.9;
+    z-index:1;
 }
 
-.outer-container {
-    background: linear-gradient(135deg, #6e90c9, #4f74b8);
-    padding: 50px;
-    border-radius: 25px;
-    width: 420px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+/* LEFT SIDE */
+.bubble-left-big{
+    width:280px;
+    height:280px;
+    background:radial-gradient(circle at 30% 30%,#67e8f9,#0ea5e9);
+    top:15%;
+    left:-120px;  /* pushed outside */
 }
 
-.login-box {
-    background: rgba(255,255,255,0.15);
-    padding: 40px;
-    border-radius: 20px;
-    text-align: center;
+.bubble-left-small{
+    width:180px;
+    height:180px;
+    background:radial-gradient(circle at 30% 30%,#c084fc,#7c3aed);
+    bottom:15%;
+    left:-80px;  /* pushed outside */
 }
 
-h2 {
-    color: white;
-    margin-bottom: 30px;
-    letter-spacing: 2px;
+/* RIGHT SIDE */
+.bubble-right-big{
+    width:300px;
+    height:300px;
+    background:radial-gradient(circle at 30% 30%,#60a5fa,#1e40af);
+    top:5%;
+    right:-130px;  /* pushed outside */
 }
 
-input, button {
-    width: 100%;
-    padding: 14px;
-    margin: 12px 0;
-    border-radius: 8px;
-    font-size: 14px;
+.bubble-right-small{
+    width:170px;
+    height:170px;
+    background:radial-gradient(circle at 30% 30%,#a78bfa,#6d28d9);
+    bottom:20%;
+    right:-90px;  /* pushed outside */
 }
 
-input {
-    border: none;
-    background: #e6e6e6;
+/* ===== CENTER CARD ===== */
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
-button {
-    background: #3f4aa1;
-    color: white;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
+.card{
+    position:relative;
+    width:420px;
+    padding:45px;
+    border-radius:18px;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,0.25);
+    box-shadow:0 25px 60px rgba(0,0,0,0.5);
+    color:white;
+    text-align:center;
+    z-index:5; /* above bubbles */
 }
 
-button:hover {
-    background: #2f3f90;
+.card h2{
+    margin-bottom:25px;
+    font-weight:500;
 }
 
-.bottom-links {
-    margin-top: 20px;
+input{
+    width:100%;
+    padding:10px;
+    margin:12px 0;
+    border-radius:8px;
+    border:none;
+    background:rgba(255,255,255,0.15);
+    color:white;
+    outline:none;
 }
 
-.bottom-links a {
-    display: block;
-    color: white;
-    text-decoration: none;
-    margin-top: 10px;
+input::placeholder{
+    color:rgba(255,255,255,0.8);
 }
 
-.bottom-links a:hover {
-    text-decoration: underline;
+button{
+    width:100%;
+    padding:10px;
+    margin-top:15px;
+    border-radius:8px;
+    border:none;
+    background:linear-gradient(135deg,#4f8cff,#7c3aed);
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+.links{
+    margin-top:15px;
+    font-size:14px;
+}
+
+.links a{
+    display:block;
+    margin-top:6px;
+    color:rgba(255,255,255,0.9);
+    text-decoration:none;
+}
+
+.links a:hover{
+    text-decoration:underline;
 }
 </style>
 </head>
 
 <body>
 
-<div class="outer-container">
-<div class="login-box">
+<!-- LEFT SIDE BUBBLES -->
+<div class="bubble bubble-left-big"></div>
+<div class="bubble bubble-left-small"></div>
 
-<h2>MEMBER LOGIN</h2>
+<!-- RIGHT SIDE BUBBLES -->
+<div class="bubble bubble-right-big"></div>
+<div class="bubble bubble-right-small"></div>
+
+<div class="card">
+<h2>Sign In</h2>
 
 <form method="POST">
-<input type="text" name="name" placeholder="Username" required>
+<input type="text" name="name" placeholder="Email" required>
 <input type="password" name="password" placeholder="Password" required>
-<button type="submit">LOGIN</button>
+<button type="submit">Login</button>
 </form>
 
-<div class="bottom-links">
+<div class="links">
 <a href="/signup">Sign Up</a>
 <a href="/admin">Admin Login</a>
 </div>
 
-</div>
 </div>
 
 </body>
