@@ -8,74 +8,39 @@
     box-sizing:border-box;
 }
 
-html,body{
+body{
     margin:0;
     min-height:100vh;
     font-family:Arial, sans-serif;
     background:linear-gradient(135deg,#0d1b3d,#162a5e);
-    overflow:hidden;
-    position:relative;
-}
-
-/* ===== SIDE BUBBLES ===== */
-
-.bubble{
-    position:absolute;
-    border-radius:50%;
-    opacity:0.85;
-    z-index:1;
-}
-
-.bubble-left{
-    width:280px;
-    height:280px;
-    background:radial-gradient(circle at 30% 30%,#67e8f9,#0ea5e9);
-    top:10%;
-    left:-120px;
-}
-
-.bubble-right{
-    width:300px;
-    height:300px;
-    background:radial-gradient(circle at 30% 30%,#60a5fa,#1e40af);
-    bottom:10%;
-    right:-130px;
-}
-
-/* ===== CENTER CARD ===== */
-
-body{
     display:flex;
     justify-content:center;
     align-items:center;
 }
 
+/* Card */
 .card{
-    position:relative;
     width:900px;
     padding:40px;
     border-radius:18px;
-    background:linear-gradient(rgba(255,255,255,0.10), rgba(255,255,255,0.05));
+    background:rgba(255,255,255,0.10);
     border:1px solid rgba(255,255,255,0.25);
     box-shadow:0 25px 60px rgba(0,0,0,0.45);
     color:white;
     text-align:center;
-    z-index:5;
 }
 
-/* Heading */
 h2{
     margin-bottom:25px;
-    font-weight:500;
 }
 
 /* Table */
 table{
     width:100%;
     border-collapse:collapse;
-    margin-bottom:30px;
+    margin-bottom:25px;
     background:rgba(255,255,255,0.05);
-    border-radius:8px;
+    border-radius:10px;
     overflow:hidden;
 }
 
@@ -118,11 +83,21 @@ button{
     color:white;
 }
 
+.delete-all-btn{
+    padding:10px 25px;
+    background:#b91c1c;
+    color:white;
+    border:none;
+    border-radius:6px;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
 button:hover{
     opacity:0.9;
 }
 
-/* Back Button */
+/* Back button */
 .back-btn{
     display:inline-block;
     padding:12px 30px;
@@ -141,43 +116,56 @@ button:hover{
 
 <body>
 
-<div class="bubble bubble-left"></div>
-<div class="bubble bubble-right"></div>
-
 <div class="card">
 <h2>Ticket Summary</h2>
 
 <table>
 <tr>
-<th>Name</th>
-<th>Total</th>
-<th>Edit</th>
-<th>Delete</th>
+    <th>Name</th>
+    <th>Total</th>
+    <th>Edit</th>
+    <th>Delete</th>
 </tr>
 
+{% set total = 0 %}
 {% for row in data %}
+{% set total = total + row[1] %}
 <tr>
-<td>{{ row[0] }}</td>
-<td>{{ row[1] }}</td>
+    <td>{{ row[0] }}</td>
+    <td>{{ row[1] }}</td>
 
-<td>
-<form action="/edit" method="POST">
-<input type="hidden" name="username" value="{{ row[0] }}">
-<input type="number" name="count" value="{{ row[1] }}" min="0">
-<button type="submit" class="update-btn">Update</button>
-</form>
-</td>
+    <td>
+        <form action="/edit" method="POST">
+            <input type="hidden" name="username" value="{{ row[0] }}">
+            <input type="number" name="count" value="{{ row[1] }}" min="0">
+            <button type="submit" class="update-btn">Update</button>
+        </form>
+    </td>
 
-<td>
-<form action="/delete" method="POST">
-<input type="hidden" name="username" value="{{ row[0] }}">
-<button type="submit" class="delete-btn">Delete</button>
-</form>
-</td>
-
+    <td>
+        <form action="/delete" method="POST">
+            <input type="hidden" name="username" value="{{ row[0] }}">
+            <button type="submit" class="delete-btn">Delete</button>
+        </form>
+    </td>
 </tr>
 {% endfor %}
+
+<!-- TOTAL ROW -->
+<tr style="font-weight:bold; background:rgba(255,255,255,0.08);">
+    <td>Total Tickets</td>
+    <td>{{ total }}</td>
+    <td colspan="2"></td>
+</tr>
+
 </table>
+
+<!-- DELETE ALL BUTTON -->
+<form action="/delete_all" method="POST">
+    <button type="submit" class="delete-all-btn">
+        Delete All Tickets
+    </button>
+</form>
 
 <a href="/" class="back-btn">Back to Login</a>
 
