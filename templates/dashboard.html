@@ -1,75 +1,147 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Your Tickets</title>
+<title>Your Tickets</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #3b6cb7, #5f88c5);
-            text-align: center;
-        }
+<style>
+*{
+    box-sizing:border-box;
+}
 
-        .container {
-            background: #6e90c9;
-            margin: 80px auto;
-            padding: 40px;
-            border-radius: 20px;
-            width: 500px;
-            color: white;
-        }
+html,body{
+    margin:0;
+    height:100%;
+    font-family:Arial, sans-serif;
+    background:linear-gradient(135deg,#0d1b3d,#162a5e);
+    overflow:hidden;
+    position:relative;
+}
 
-        h2 {
-            margin-bottom: 20px;
-        }
+/* ===== SIDE BUBBLES ===== */
 
-        .ticket-box {
-            margin-bottom: 25px;
-        }
+.bubble{
+    position:absolute;
+    border-radius:50%;
+    opacity:0.9;
+    z-index:1;
+}
 
-        img {
-            background: white;
-            padding: 10px;
-            border-radius: 10px;
-        }
+/* LEFT */
+.bubble-left-big{
+    width:280px;
+    height:280px;
+    background:radial-gradient(circle at 30% 30%,#67e8f9,#0ea5e9);
+    top:15%;
+    left:-120px;
+}
 
-        /* Button */
-        .back-btn {
-            display: block;          /* 🔥 makes it new line */
-            width: fit-content;      /* keeps medium size */
-            margin: 30px auto 0;     /* centers it */
-            padding: 12px 40px;
-            background: #2f3f90;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-        }
+.bubble-left-small{
+    width:180px;
+    height:180px;
+    background:radial-gradient(circle at 30% 30%,#c084fc,#7c3aed);
+    bottom:15%;
+    left:-80px;
+}
 
-        .back-btn:hover {
-            background: #1e2c6d;
-        }
+/* RIGHT */
+.bubble-right-big{
+    width:300px;
+    height:300px;
+    background:radial-gradient(circle at 30% 30%,#60a5fa,#1e40af);
+    top:5%;
+    right:-130px;
+}
 
-    </style>
+.bubble-right-small{
+    width:170px;
+    height:170px;
+    background:radial-gradient(circle at 30% 30%,#a78bfa,#6d28d9);
+    bottom:20%;
+    right:-90px;
+}
+
+/* ===== CENTER GLASS CARD ===== */
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.container{
+    position:relative;
+    width:520px;
+    padding:45px;
+    border-radius:18px;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,0.25);
+    box-shadow:0 25px 60px rgba(0,0,0,0.5);
+    color:white;
+    text-align:center;
+    z-index:5;
+}
+
+h2{
+    margin-bottom:25px;
+    font-weight:500;
+}
+
+.ticket-box{
+    margin-bottom:25px;
+}
+
+.ticket-box p{
+    margin-bottom:10px;
+}
+
+img{
+    background:white;
+    padding:10px;
+    border-radius:10px;
+}
+
+/* Back Button */
+.back-btn{
+    display:block;
+    width:fit-content;
+    margin:30px auto 0;
+    padding:12px 40px;
+    border-radius:8px;
+    border:none;
+    background:linear-gradient(135deg,#4f8cff,#7c3aed);
+    color:white;
+    font-weight:bold;
+    text-decoration:none;
+}
+
+.back-btn:hover{
+    opacity:0.9;
+}
+</style>
 </head>
 
 <body>
 
-    <div class="container">
-        <h2>YOUR TICKETS</h2>
+<!-- BUBBLES -->
+<div class="bubble bubble-left-big"></div>
+<div class="bubble bubble-left-small"></div>
+<div class="bubble bubble-right-big"></div>
+<div class="bubble bubble-right-small"></div>
 
-        {% for ticket in tickets %}
-            <div class="ticket-box">
-                <p>Ticket ID: {{ ticket }}</p>
-                <img src="/qr/{{ ticket }}" width="200">
-            </div>
-        {% endfor %}
+<div class="container">
+<h2>YOUR TICKETS</h2>
 
-        <!-- Next line button -->
-        <a href="/" class="back-btn">Back to Login</a>
+{% for ticket in tickets %}
+<div class="ticket-box">
+<p>Ticket ID: {{ ticket }}</p>
+<img src="/qr/{{ ticket }}" width="200">
+</div>
+{% endfor %}
 
-    </div>
+<a href="/" class="back-btn">Back to Login</a>
+
+</div>
 
 </body>
 </html>
