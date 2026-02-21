@@ -1,56 +1,118 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Verification</title>
+<title>Verification</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #3b6cb7, #5f88c5);
-        }
+<style>
+*{
+    box-sizing:border-box;
+}
 
-        .container {
-            background: white;
-            padding: 50px;
-            border-radius: 15px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-            text-align: center;
-            width: 400px;
-        }
+html,body{
+    margin:0;
+    height:100%;
+    font-family:Arial, sans-serif;
+    background:linear-gradient(135deg,#0d1b3d,#162a5e);
+    overflow:hidden;
+    position:relative;
+}
 
-        h1 {
-            color: #2f3f90;
-            margin-bottom: 20px;
-        }
+/* ===== SIDE BUBBLES ===== */
 
-        .back-btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 30px;
-            background: #2f3f90;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: bold;
-        }
+.bubble{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(2px);
+    opacity:0.9;
+    z-index:1;
+}
 
-        .back-btn:hover {
-            background: #1e2c6d;
-        }
-    </style>
+/* LEFT SIDE */
+.bubble-left-big{
+    width:280px;
+    height:280px;
+    background:radial-gradient(circle at 30% 30%,#67e8f9,#0ea5e9);
+    top:15%;
+    left:-120px;
+}
+
+.bubble-left-small{
+    width:180px;
+    height:180px;
+    background:radial-gradient(circle at 30% 30%,#c084fc,#7c3aed);
+    bottom:15%;
+    left:-80px;
+}
+
+/* RIGHT SIDE */
+.bubble-right-big{
+    width:300px;
+    height:300px;
+    background:radial-gradient(circle at 30% 30%,#60a5fa,#1e40af);
+    top:5%;
+    right:-130px;
+}
+
+.bubble-right-small{
+    width:170px;
+    height:170px;
+    background:radial-gradient(circle at 30% 30%,#a78bfa,#6d28d9);
+    bottom:20%;
+    right:-90px;
+}
+
+/* ===== CENTER CARD ===== */
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.card{
+    position:relative;
+    width:420px;
+    padding:45px;
+    border-radius:18px;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,0.25);
+    box-shadow:0 25px 60px rgba(0,0,0,0.5);
+    color:white;
+    text-align:center;
+    z-index:5;
+}
+
+.card h2{
+    margin-bottom:20px;
+    font-weight:500;
+}
+
+.message{
+    font-size:18px;
+    margin-top:10px;
+    opacity:0.9;
+}
+
+</style>
 </head>
 
 <body>
 
-    <div class="container">
-        <h1>{{ message }}</h1>
-        <a href="/" class="back-btn">Back to Login</a>
+<!-- LEFT SIDE BUBBLES -->
+<div class="bubble bubble-left-big"></div>
+<div class="bubble bubble-left-small"></div>
+
+<!-- RIGHT SIDE BUBBLES -->
+<div class="bubble bubble-right-big"></div>
+<div class="bubble bubble-right-small"></div>
+
+<div class="card">
+    <h2>Verification Status</h2>
+    <div class="message">
+        {{ message }}
     </div>
+</div>
 
 </body>
 </html>
