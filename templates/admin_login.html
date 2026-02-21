@@ -1,90 +1,95 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin Login</title>
+<title>Admin Login</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #3b6cb7, #5f88c5);
-        }
+<style>
+* {
+    box-sizing: border-box;   /* 🔥 Important */
+}
 
-        .container {
-            background: linear-gradient(135deg, #6e90c9, #4f74b8);
-            padding: 50px;
-            border-radius: 25px;
-            width: 420px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-            text-align: center;
-        }
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #3b6cb7, #5f88c5);
+}
 
-        h2 {
-            color: white;
-            margin-bottom: 30px;
-            letter-spacing: 2px;
-        }
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-        input {
-            width: 100%;
-            padding: 12px;
-            margin: 12px 0;
-            border: none;
-            border-radius: 8px;
-            background: #e6e6e6;
-            font-size: 14px;
-            outline: none;
-        }
+.container {
+    background: linear-gradient(135deg, #6e90c9, #4f74b8);
+    padding: 50px;
+    border-radius: 25px;
+    width: 420px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    text-align: center;
+}
 
-        button {
-            width: 100%;
-            padding: 14px;
-            margin-top: 20px;
-            background: #2f3f90;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 15px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+h2 {
+    color: white;
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+}
 
-        button:hover {
-            background: #1e2c6d;
-        }
+input, button {
+    width: 100%;              /* 🔥 SAME WIDTH */
+    padding: 14px;            /* SAME PADDING */
+    margin: 12px 0;
+    border-radius: 8px;
+    font-size: 14px;
+}
 
-        a {
-            display: block;
-            margin-top: 20px;
-            color: white;
-            text-decoration: none;
-        }
+input {
+    border: none;
+    background: #e6e6e6;
+    outline: none;
+}
 
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
+button {
+    background: #3f4aa1;
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #2f3f90;
+}
+
+a {
+    display: block;
+    margin-top: 20px;
+    color: white;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+</style>
 </head>
 
 <body>
 
-    <div class="container">
-        <h2>ADMIN LOGIN</h2>
+<div class="container">
+<h2>ADMIN LOGIN</h2>
 
-        <form method="POST">
-            Password:
-            <input type="password" name="password" required>
+<form method="POST">
+<input type="password" name="password" placeholder="Password" required>
+<button type="submit">Login</button>
+</form>
 
-            <button type="submit">Login</button>
-        </form>
+<a href="/">Back to Login</a>
 
-        <a href="/">Back to Login</a>
-    </div>
+</div>
 
 </body>
 </html>
