@@ -149,6 +149,7 @@ def verify(ticket_id):
 # ---------- ADMIN LOGIN ----------
 @app.route("/admin/dashboard")
 def admin_dashboard():
+
     conn = get_connection()
     cur = conn.cursor()
 
@@ -159,7 +160,7 @@ def admin_dashboard():
     """)
     data = cur.fetchall()
 
-    total = sum(row[1] for row in data)  # ✅ correct total
+    total = sum(row[1] for row in data)
 
     cur.close()
     conn.close()
@@ -235,10 +236,9 @@ def admin_login():
     if request.method == "POST":
         password = request.form["password"]
 
-        if password == "1234":   # ✅ KEEP YOUR PASSWORD
+        if password == "1234":
             return redirect("/admin/dashboard")
         else:
             return "Wrong Password"
 
     return render_template("admin_login.html")
-
